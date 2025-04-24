@@ -16,7 +16,7 @@ export class AuthController {
     status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data or email already exists',
   })
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.CREATED)
   @Post('signup')
   signup(@Body() dto: AuthDto) {
     return this.authService.signup(dto);
@@ -29,10 +29,6 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully authenticated',
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'Invalid credentials',
   })
   @HttpCode(HttpStatus.OK)
   @Post('signin')

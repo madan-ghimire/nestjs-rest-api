@@ -1,8 +1,11 @@
 import { ForbiddenException, Injectable, Post } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+// import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
+
 import * as bcrypt from 'bcrypt';
 import { AuthDto } from './dto';
-import { saltRounds } from 'constants/constants';
+// import { saltRounds } from 'constants/constants';
+import { saltRounds } from '../../constants/constants';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -27,15 +30,7 @@ export class AuthService {
         },
       });
 
-      return {
-        msg: 'User signed up successfully',
-        user: {
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        },
-      };
+      return this.signToken(user.id, user.email);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
