@@ -3,7 +3,8 @@ import { ForbiddenException, Injectable, Post } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 import * as bcrypt from 'bcrypt';
-import { AuthDto } from './dto';
+import { SignInDto } from './dto/signin-dto';
+import { SignUpDto } from './dto/signup-dto';
 // import { saltRounds } from 'constants/constants';
 import { saltRounds } from '../../constants/constants';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -19,7 +20,7 @@ export class AuthService {
   ) {}
 
   @Post()
-  async signup(dto: AuthDto) {
+  async signup(dto: SignUpDto) {
     const hashedPassword = await bcrypt.hash(dto.password, saltRounds);
 
     try {
@@ -27,6 +28,10 @@ export class AuthService {
         data: {
           email: dto.email,
           password: hashedPassword,
+          username: dto.username,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          displayName: `${dto.firstName} ${dto.lastName}`,
         },
       });
 
@@ -44,7 +49,7 @@ export class AuthService {
   }
 
   @Post()
-  async signin(dto: AuthDto) {
+  async signin(dto: SignInDto) {
     // find the user by email
     const user = await this.prisma.user.findUnique({
       where: {
