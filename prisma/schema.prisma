@@ -22,9 +22,13 @@ model User {
   email    String  @unique
   password String
 
-  firstName String?
-  lastName  String?
-  Bookmark  Bookmark[]
+  firstName     String?
+  lastName      String?
+  displayName   String?
+  isActive      Boolean    @default(true)
+  loginEnabled  Boolean    @default(true)
+  emailVerified Boolean    @default(false)
+  Bookmark      Bookmark[]
 
   @@map("users")
 }

@@ -1,17 +1,13 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpStatus,
-  Patch,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
+// import { GetUser } from 'src/auth/decorator';
+// import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guard';
+
 import { UserService } from './user.service';
 import { EditUserDto } from './dto';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
 @UseGuards(JwtGuard)
 @ApiBearerAuth()
@@ -27,14 +23,6 @@ export class UserController {
   @ApiOperation({
     summary: 'Get all users',
     description: 'Retrieves a list of all registered users',
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of users successfully retrieved',
-  })
-  @ApiResponse({
-    status: HttpStatus.FORBIDDEN,
-    description: 'Unauthorized access',
   })
   @Get('getAll')
   getAllUsers() {

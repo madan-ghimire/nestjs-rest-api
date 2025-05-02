@@ -17,8 +17,7 @@ async function bootstrap() {
     basicAuth({
       challenge: true,
       users: {
-        [process.env.SWAGGER_USER || 'admin']:
-          process.env.SWAGGER_PASSWORD || 'password',
+        [process.env.SWAGGER_USER!]: process.env.SWAGGER_PASSWORD!,
       },
     }),
   );
@@ -45,6 +44,10 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 8080);
 }
 bootstrap().then(
-  () => console.info('Application started 🚀'),
+  () => {
+    const port = process.env.PORT ?? 8080;
+    console.info(`🚀 Application started at: http://localhost:${port}`);
+    console.info(`📚 Swagger UI available at: http://localhost:${port}/api`);
+  },
   (err) => console.error('Failed to start application:', err),
 );
